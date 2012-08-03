@@ -215,6 +215,22 @@ module Cape
       rake.remote_executable = value
     end
 
+    # Determines if the specified _method_ is supported by the containing
+    # binding.
+    #
+    # @param [Symbol, String] method          the method
+    # @param [true, false]    include_private whether private or not
+    # @return [true]  _method_ is supported
+    # @return [false] _method_ is not supported
+    def respond_to_missing?(method, include_private)
+      @outer_self.send method
+      true
+    rescue ::ArgumentError
+      true
+    rescue ::NoMethodError
+      false
+    end
+
   protected
 
     def rake
