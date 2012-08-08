@@ -223,12 +223,8 @@ module Cape
     # @return [true]  _method_ is supported
     # @return [false] _method_ is not supported
     def respond_to_missing?(method, include_private)
-      @outer_self.send method
-      true
-    rescue ::ArgumentError
-      true
-    rescue ::NoMethodError
-      false
+      @outer_self.respond_to?(method, include_private) ||
+      @outer_self.respond_to_missing?(method, include_private)
     end
 
   protected
